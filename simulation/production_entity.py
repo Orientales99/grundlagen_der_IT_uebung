@@ -1,6 +1,6 @@
 import simpy
 
-class ProductionRobot:
+class ProductionEntity:
     def __init__(self, environment: simpy.Environment, name: str, number_of_entities:int = 1):
         self.env:  simpy.Environment() = environment
         self.name: str = name

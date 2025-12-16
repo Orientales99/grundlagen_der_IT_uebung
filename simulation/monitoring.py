@@ -1,7 +1,7 @@
 import simpy
 import matplotlib.pyplot as plt
 
-from src.production_material import ProductionMaterial
+from simulation.production_material import ProductionMaterial
 
 class Monitoring:
     def __init__(self, env: simpy.Environment, product_list: list[ProductionMaterial]):

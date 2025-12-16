@@ -1,9 +1,9 @@
 import simpy
 
-from src.machine import Machine
-from src.working_robot import WorkingRobot
-from src.production_material import ProductionMaterial
-from src.monitoring import Monitoring
+from simulation.machine import Machine
+from simulation.working_robot import WorkingRobot
+from simulation.production_material import ProductionMaterial
+from simulation.monitoring import Monitoring
 
 env = simpy.Environment()
 
@@ -24,14 +24,14 @@ marzipan = ProductionMaterial(env, "Lebkuchen", 0, 100)
 product_list: list[ProductionMaterial] = [mehl, wasser, kalte_schokolade,heisse_schokolade, teig, marzipan]
 
 # Working_Robots
-working_robot = WorkingRobot(env, "Teig_wr", 2)
+working_robot = WorkingRobot(env, "Working_Robot", 2)
 
 
-# Materialien
-machine_schokoladenueberzug = Machine(env, "Schokoladenueberzug_ma", 1, working_robot,False, heisse_schokolade, kalte_schokolade,
-                                      production_time=1)
-machine_teig = Machine(env, "Teig_ma", 1,working_robot,  True, teig, wasser, mehl, 2)
-machine_lebkuchen = Machine(env, "Lebkuchen_ma", 1, working_robot,  True, marzipan, heisse_schokolade, teig, 1)
+# Maschine
+machine_schokoladenueberzug = Machine(env, "Schokoladenueberzug_ma", 1,False, heisse_schokolade, kalte_schokolade,
+                                      production_time=150, working_robots=working_robot)
+machine_teig = Machine(env, "Teig_ma", 1,  True, teig, wasser, mehl, 3, working_robot)
+machine_lebkuchen = Machine(env, "Lebkuchen_ma", 1,  True, marzipan, heisse_schokolade, teig, 60, working_robot)
 
 # Monitoring instanziieren
 monitor = Monitoring(env, product_list)
@@ -43,6 +43,5 @@ machine_lebkuchen.start_production()
 
 env.process(monitor.monitoring_process())
 
-
-env.run(until=100)
+env.run(until=1000)
 monitor.plot_results()

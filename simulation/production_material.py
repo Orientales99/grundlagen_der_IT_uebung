@@ -10,12 +10,20 @@ class ProductionMaterial:
         # capacity: Maximale Menge die in dem Container gespeichert werden kann
         self.container: simpy.Container = simpy.Container(self.env, init= initial_quantity, capacity=capacity)
 
-        # Format: (zeit, produktname, bestand)
+        # Format: (Zeit, Warenbestand)
         self.history: list[tuple[float, float]] = []
 
-    def get_material_quantity(self) -> float:
-        return self.container.level
+    def print_details(self):
+        print(f"Name: {self.name}")
+        print(f"Quantity in Container: {self.container.level}")
+        print(f"Capacity in Container: {self.container.capacity}")
 
+    # Zum Dokumentieren der Veränderung des Containerbestands. (Monitoring)
     def log_state(self):
         """Speichert aktuellen Zustand in die history-Liste."""
         self.history.append((self.env.now, self.container.level))
+
+
+    # Potenzielle Getter - Methode
+    def get_material_quantity(self) -> float:
+        return self.container.level
